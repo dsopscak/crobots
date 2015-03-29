@@ -1,13 +1,12 @@
+CFLAGS = -O4 -march=native -mtune=native
+CFLAGS += -Dlinux -DUNIX
+LIBS = -lm -lcurses
+# Linux gcc flags: optimize(O) separate text and data(i)
+# Sembra che linkare -ltermcap sia inutile
+
 # makefile for crobots
 
 OBJS =  ap.o main.o debug.o grammar.o lexanal.o compiler.o cpu.o intrins.o display.o screen.o motion.o
-
-# Linux gcc flags: optimize(O) separate text and data(i)
-
-CFLAGS = -O4 -march=native -mtune=native -Dlinux -DUNIX
-LIBS = -lm -lcurses
-
-#  Sembra che linkare -ltermcap sia inutile
 
 #  nota - dopo lunghi infruttuosi tentativi per ricompilare lexanal.l
 #  mi sono arreso e ho usato quello fornito nella distro gia' trasformato in *.c
@@ -64,3 +63,5 @@ screenx.o:	crobots.h screenx.c
 motion.o:	crobots.h motion.c
 		gcc $(CFLAGS) -c motion.c
 	
+clean:
+		rm -f $(OBJS) crobots

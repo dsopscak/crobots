@@ -123,14 +123,13 @@ char *argv[];
 	  else bpoint="";
 	  break;
 
-
-	/*Noheader*/
-#ifdef __MSDOS__
+	/*Noheader - Quiet mode*/
+//#ifdef __MSDOS__
 	case 'g':
 	case 'G':
 	  garbage = 1;
 	  break;
-#endif
+//#endif
 
 	default:
 	  break;
@@ -155,13 +154,12 @@ char *argv[];
   }
 
   /* print version, copyright notice */
-if (!garbage)
-{
-  fprintf(stderr,"\n");
-  fprintf(stderr,"%s",version);
-  fprintf(stderr,"%s",copyright);
-  fprintf(stderr,"\n");
-}
+  if (!garbage)
+  {
+    fprintf(stderr,"%s",version);
+    fprintf(stderr,"%s",copyright);
+    fprintf(stderr,"\n");
+  }
 
   /* make sure there is at least one robot at this point */
   if (num_robots == 0) {
@@ -176,7 +174,7 @@ if (!garbage)
 
   /* compile only */
   if (comp_only) comp(files,num_robots);
-  else 
+  else
     /* debug the first robot listed */
     if (debug_only) tracef(files[0]); /* trace only first source */
   else {

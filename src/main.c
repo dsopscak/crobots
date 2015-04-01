@@ -297,7 +297,7 @@ int n;
       if (s == (char *) NULL)
 	  s = f[i];
 
-      strcpy(robots[num_robots].name,s);
+      strncpy(robots[num_robots].name,s,MAXROBOTNAMELEN);
 
 	  s=robots[num_robots].name;	/*questo serve per mettere in output sempre .r*/
 	  if(tolower(s[strlen(s)-1])!='r') s[strlen(s)-1]=0;
@@ -453,7 +453,7 @@ int n;
 #endif
       if (s == (char *) NULL)
 	  s = f[i];
-      strcpy(robots[num_robots].name,s);
+      strncpy(robots[num_robots].name,s,MAXROBOTNAMELEN);
 
 	  s=robots[num_robots].name;	/*questo serve per mettere in output sempre .r*/
 	  if(tolower(s[strlen(s)-1])!='r') s[strlen(s)-1]=0;
@@ -532,7 +532,7 @@ int n;
     k = 0;
     for (i = 0; i < num_robots; i++) {
       if (robots[i].status == ACTIVE) {
-	printf("   (%d)%14s: damage=%% %d  ",i+1,robots[i].name,
+	printf("   (%d)%*s: damage=%% %d  ",i+1,MAXROBOTNAMELEN,robots[i].name,
 		robots[i].damage);
 	if (i == 1)
 	  printf("\n");
@@ -556,7 +556,7 @@ int n;
 	else
 	  ties[i]++;
       }
-      printf("   (%d)%14s: wins=%d ties=%d  ",i+1,robots[i].name,
+      printf("   (%d)%*s: wins=%d ties=%d  ",i+1,MAXROBOTNAMELEN,robots[i].name,
 	      wins[i],ties[i]);
       if (i == 1)
 	printf("\n");

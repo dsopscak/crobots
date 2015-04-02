@@ -21,47 +21,32 @@ OBJS =  ap.o main.o debug.o grammar.o lexanal.o compiler.o cpu.o intrins.o displ
 
 
 crobots: 	$(OBJS)
-		gcc -s $(CFLAGS) $(OBJS) -o crobots $(LIBS)
-
-ap.o: 	ap.c
-		gcc $(CFLAGS) -c ap.c
-
-main.o: 	crobots.h main.c
-		gcc $(CFLAGS) -c main.c
+		$(CC) $(CFLAGS) $(OBJS) -o crobots $(LIBS)
 
 grammar.o: 	crobots.h compiler.h grammar.y
 #		yacc -d grammar.y
 #		egrep -v '# line|^#$$' y.tab.c >grammar.c
 #		rm y.tab.c
 #		mv y.tab.h tokens.h
-		gcc $(CFLAGS) -c grammar.c
+		$(CC) $(CFLAGS) -c grammar.c
 
 lexanal.o: 	crobots.h compiler.h lexanal.l grammar.y
 #		lex lexanal.l
 #		egrep -v '# ifdef|# endif' lex.yy.c >lexanal.c
 #		rm lex.yy.c
-		gcc $(CFLAGS) -c lexanal.c
+		$(CC) $(CFLAGS) -c lexanal.c
 
-compiler.o: 	crobots.h compiler.h tokens.h compiler.c
-		gcc $(CFLAGS) -c compiler.c
-	
 cpu.o: 		crobots.h grammar.y cpu.c
-		gcc $(CFLAGS) -c cpu.c
+		$(CC) $(CFLAGS) -c cpu.c
 	
-intrins.o:	crobots.h intrins.c
-		gcc $(CFLAGS) -c intrins.c
-	
-display.o:	crobots.h display.c
-		gcc $(CFLAGS) -c display.c
-	
-screen.o:	crobots.h screen.c
-		gcc $(CFLAGS) -c screen.c
+compiler.o: 	crobots.h compiler.h tokens.h compiler.c
+		$(CC) $(CFLAGS) -c compiler.c
 
-screenx.o:	crobots.h screenx.c
-		gcc $(CFLAGS) -c screenx.c
-	
-motion.o:	crobots.h motion.c
-		gcc $(CFLAGS) -c motion.c
+debug.o:	debug.c crobots.h tokens.h
+		$(CC) $(CFLAGS) -c debug.c		
+
+%.o:		%.c crobots.h
+		$(CC) $(CFLAGS) -c $<
 	
 clean:
 		rm -f $(OBJS) crobots

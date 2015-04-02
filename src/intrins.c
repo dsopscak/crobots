@@ -14,7 +14,7 @@
 /* 0,0 = lower left, max_x,max_y = upper right; i.e., quadrant 1 */
 
 #include "crobots.h"
-#include "math.h"
+#include <math.h>
 #include <stdio.h>
 
 /* stack routines in cpu.c */

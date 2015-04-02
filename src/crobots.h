@@ -22,7 +22,7 @@
 #define ILEN      8		/* length of identifiers, also in lexanal.l */
 #define MAXSYM    128    /* maximum number of symbol table entries per pool */
 #define MAXROBOTS 4		/* maximum number of robots */
-#define MAXROBOTNAMELEN	32
+#define MAXROBOTNAMELEN	14
 #define CODESPACE 2000		/* maximum number of machine instructions */
 #define DATASPACE 2000		/* maximum number of data stack entries */
 #define MOTION_CYCLES 15 	/* number of cycles before motion update */

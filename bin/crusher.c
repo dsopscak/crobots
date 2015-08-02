@@ -11,9 +11,8 @@ main()
     bearing = 0;
     while (1)
         {
-        if (range == 0)
-            check_corners();
-        else if (range > 700)
+        check_corners();
+        if (range > 700)
             pursue();
         else
             fire();
@@ -23,11 +22,18 @@ main()
             int new_x, new_y;
             new_x = rand(980) + 10;
             new_y = rand(980) + 10;
-            while (loc_x() != new_x && loc_y() != new_y)
+            while (distance(loc_x(), loc_y(), new_x, loc_y()) > 10)
                 drive(plot_course(new_x, new_y), 100);
             drive(0,0);
             dmg = damage();
             }
+
+        far_scan();
+        if (range > 700)
+            pursue();
+        else
+            fire();
+
         }
     }
 
@@ -53,6 +59,28 @@ pursue()
     if (range)
        fire();
     }
+
+far_scan()
+    {
+    int start, count;
+    start = 135;
+    count = 8;
+    if (loc_x() < 500 && loc_y() < 500)
+        start = 315;
+    else if (loc_x() < 500 && loc_y() > 500)
+        start = 225;
+    else if (loc_x() > 500 && loc_y() < 500)
+        start = 45;
+    while (count >= 0 && range == 0)
+        {
+        if (range = scan(start + (count * 20), 10))
+            bearing = start + (count * 20);
+        --count;
+        }
+    if (range)
+        zero_in();
+    }
+
 
 check_corners()
     {

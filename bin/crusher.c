@@ -17,6 +17,12 @@ main()
         else
             fire();
 
+        far_scan();
+        if (range > 700)
+            pursue();
+        else
+            fire();
+
         if (dmg != damage())
             {
             int new_x, new_y;
@@ -27,14 +33,20 @@ main()
             drive(0,0);
             dmg = damage();
             }
-
-        far_scan();
-        if (range > 700)
-            pursue();
         else
-            fire();
-
+            nudge();
         }
+    }
+
+nudge()
+    {
+    int nudge_dir, old_x, old_y;
+    nudge_dir = rand(359);
+    old_x = loc_x();
+    old_y = loc_y();
+    while (distance(loc_x(), loc_y(), old_x, old_y) < 10)
+        drive(nudge_dir, 100);
+    drive(nudge_dir, 0);
     }
 
 fire()
@@ -42,7 +54,16 @@ fire()
     while (range)
         {
         cannon(bearing, range);
-        range = scan(bearing, 1);
+        if ((range = scan(bearing, 1)) == 0)
+            {
+            bearing -= 9;
+            if ((range = scan(bearing, 10)) > 0)
+                zero_in();
+            else if ((range = scan(bearing += 9, 10)) > 0)
+                zero_in();
+            else if ((range = scan(bearing += 9, 10)) > 0)
+                zero_in();
+            }
         if (dmg != damage())
             range = 0;
         }
@@ -62,20 +83,21 @@ pursue()
 
 far_scan()
     {
-    int start, count;
+    int start, count, i;
+    i = 0;
     start = 135;
-    count = 8;
     if (loc_x() < 500 && loc_y() < 500)
         start = 315;
     else if (loc_x() < 500 && loc_y() > 500)
         start = 225;
     else if (loc_x() > 500 && loc_y() < 500)
         start = 45;
-    while (count >= 0 && range == 0)
+    count = 24;
+    while (dmg == damage() && i < count && range == 0)
         {
-        if (range = scan(start + (count * 20), 10))
-            bearing = start + (count * 20);
-        --count;
+        if (range = scan(start + (i * 15), 10))
+            bearing = start + (i * 15);
+        ++i;
         }
     if (range)
         zero_in();
@@ -89,29 +111,24 @@ check_corners()
     b2 = plot_course(0,999);
     b3 = plot_course(999,999);
     b4 = plot_course(999,0);
-    bearing = -1;
-    while (bearing == -1)
-        {
-        if (range = scan(b1 - 10, 10))
-            bearing = b1 - 10;
-        else if (range = scan(b1 + 10, 10))
-            bearing = b1 + 10;
-        else if (range = scan(b2 - 10, 10))
-            bearing = b2 - 10;
-        else if (range = scan(b2 + 10, 10))
-            bearing = b2 + 10;
-        else if (range = scan(b3 - 10, 10))
-            bearing = b3 - 10;
-        else if (range = scan(b3 + 10, 10))
-            bearing = b3 + 10;
-        else if (range = scan(b4 - 10, 10))
-            bearing = b4 - 10;
-        else if (range = scan(b4 + 10, 10))
-            bearing = b4 + 10;
-        if (dmg != damage())
-            return;
-        }
-    zero_in();
+    if (range = scan(b1 - 10, 10))
+        bearing = b1 - 10;
+    else if (range = scan(b1 + 10, 10))
+        bearing = b1 + 10;
+    else if (range = scan(b2 - 10, 10))
+        bearing = b2 - 10;
+    else if (range = scan(b2 + 10, 10))
+        bearing = b2 + 10;
+    else if (range = scan(b3 - 10, 10))
+        bearing = b3 - 10;
+    else if (range = scan(b3 + 10, 10))
+        bearing = b3 + 10;
+    else if (range = scan(b4 - 10, 10))
+        bearing = b4 - 10;
+    else if (range = scan(b4 + 10, 10))
+        bearing = b4 + 10;
+    if (range)
+        zero_in();
     }
 
 zero_in()

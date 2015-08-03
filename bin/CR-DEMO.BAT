@@ -1,2 +1,1 @@
-crobots rabbit.r counter.r rook.r sniper.r
-
+crobots crusher.c counter.r rook.r sniper.r
